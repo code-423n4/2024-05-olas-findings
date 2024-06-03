@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "haxatron",
+  "risk": "3",
+  "title": "Incorrect staking incentives can be sent to `GnosisTargetDispenserL2` and cause drainage of OLAS tokens",
+  "issueId": 6,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/6"
+}
