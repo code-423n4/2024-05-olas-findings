@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "haxatron",
+  "risk": "2",
+  "title": "The `msg.value` - `cost` for multiple cross-chain bridges are not refunded to users",
+  "issueId": 4,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/4"
+}
