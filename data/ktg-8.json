@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "ktg",
+  "risk": "2",
+  "title": "Wrong maxBond/effectiveBond calculation in function Tokenomics.initializeTokenomics",
+  "issueId": 8,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/8"
+}
