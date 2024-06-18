@@ -120,11 +120,3 @@ For example for the Wormhole bridge, if the `limitAmount` for a target on the L2
     }
 ```
 
-### 4. Enforce a limit on maximum number of `stakingTargets` for `claimStakingIncentivesBatch`
-
-A maximum limit should be enforced for the number of `stakingTargets` for the permissionless `claimStakingIncentivesBatch` when sending the cross-chain transaction, this is because when processing on L2, the gas required grows linearly with the number of `stakingTargets`. 
-
-This can cause the gas required to grow over the maximum gas limit of 2_000_000 enforced by Olas. However, the cross-chain transaction can still be replayed.
-
-It is not possible to cause this to exceed the L2 block gas limit because the having many `stakingTargets` will cause the transaction on the L1 to exceed the block gas limit before the L2 block gas limit.
-
