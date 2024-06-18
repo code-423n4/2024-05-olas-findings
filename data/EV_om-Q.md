@@ -106,3 +106,13 @@ The `StakingFactory` contract deploys new proxy instances of the `StakingBase` i
 In the case of a reorg, a user's transaction to stake a service may end up depositing to a proxy contract deployed at the same address but by a different user, with potentially very different staking parameters.
 
 Consider including `msg.sender` in the salt used for `create2()` to ensure each user's deployed proxy is unique to them, even in the case of a reorg.
+
+### [L-11] Inaccurate nominee weights may be returned by `_getWeight()` for unused nominees
+
+The `_getWeight()` function fills in historic nominee weights week-over-week for up to `MAX_NUM_WEEKS` (53 weeks). However, any number of nominees can be permissionlessly added via `addNomineeEVM()` or `addNomineeNonEVM()` and remain unused for over 53 weeks. 
+
+In this scenario, it is not feasible to ensure that every nominee is checkpointed within that 53 week period. If a nominee is not checkpointed for over 53 weeks, `_getWeight()` would return a nominee weight value that is higher than the actual current bias, as the loop exits after 53 iterations.
+
+This inaccurate weight value is then used throughout the protocol, as the return value of `_getWeight()` is considered accurate under all circumstances. This could lead to incorrect relative weights and sums being used.
+
+Consider implementing logic that allows the calling function to revert if the `_getWeight()` return value is from a nominee that hasn't been checkpointed in over 53 weeks, instead of unconditionally using a potentially stale value.
