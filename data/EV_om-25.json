@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "EV_om",
+  "risk": "3",
+  "title": "`StakingToken` may become insolvent when using a rebasing token",
+  "issueId": 25,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/25"
+}
