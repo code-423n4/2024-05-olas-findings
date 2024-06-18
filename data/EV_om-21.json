@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "EV_om",
+  "risk": "3",
+  "title": "User's gas fees for Arbitrum messages are not refunded and will be lost",
+  "issueId": 21,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/21"
+}
