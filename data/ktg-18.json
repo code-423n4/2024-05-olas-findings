@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "ktg",
+  "risk": "2",
+  "title": "Contract Tokenonics does not check incentives by owner address",
+  "issueId": 18,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/18"
+}
