@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "haxatron",
+  "risk": "3",
+  "title": "No limit on maximum number of `stakingTargets` for `claimStakingIncentivesBatch`",
+  "issueId": 15,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/15"
+}
