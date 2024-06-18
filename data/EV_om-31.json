@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "EV_om",
+  "risk": "2",
+  "title": "Blocklisted or paused state in staking token can prevent service owner from unstaking",
+  "issueId": 31,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/31"
+}
