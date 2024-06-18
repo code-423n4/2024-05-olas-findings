@@ -1,0 +1,8 @@
+{
+  "contest": 369,
+  "handle": "EV_om",
+  "risk": "3",
+  "title": "Arbitrary tokens and data can be bridged to `GnosisTargetDispenserL2` to manipulate staking incentives",
+  "issueId": 22,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/22"
+}
