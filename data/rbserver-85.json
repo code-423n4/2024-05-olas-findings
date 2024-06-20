@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "rbserver",
+  "risk": "2",
+  "title": "Transferring reward from `StakingToken` contract to service owner can revert when `stakingToken` is a token that has balance changes outside of transfers",
+  "issueId": 85,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/85",
+  "originalIssueId": 244,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/244"
+}
