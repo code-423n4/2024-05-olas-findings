@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "fyamf",
+  "risk": "3",
+  "title": "Loss of incentives if total weight in an epoch is zero",
+  "issueId": 61,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/61",
+  "originalIssueId": 152,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/152"
+}
