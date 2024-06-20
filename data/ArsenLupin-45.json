@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ArsenLupin",
+  "risk": "2",
+  "title": "syncWithheldTokens on Arbitrum could fail to be delivered.",
+  "issueId": 45,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/45",
+  "originalIssueId": 250,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/250"
+}
