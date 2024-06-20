@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "steadyman",
+  "risk": "2",
+  "title": "The attacker can get more rewards by redistributing the weights",
+  "issueId": 96,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/96",
+  "originalIssueId": 141,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/141"
+}
