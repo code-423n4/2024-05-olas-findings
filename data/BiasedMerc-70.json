@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "BiasedMerc",
+  "risk": "2",
+  "title": "StakingBase::_evict() overwrites the wrong index, leading to wrong serice being evicted",
+  "issueId": 70,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/70",
+  "originalIssueId": 74,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/74"
+}
