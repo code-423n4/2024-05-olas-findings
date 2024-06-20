@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "peanuts",
+  "risk": "2",
+  "title": "Refund address on Wormhole that is set as msg.sender may be different for different chains",
+  "issueId": 99,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/99",
+  "originalIssueId": 66,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/66"
+}
