@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Centaur",
+  "risk": "3",
+  "title": " Queued transactions after a migrate will get stuck forever!",
+  "issueId": 65,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/65",
+  "originalIssueId": 115,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/115"
+}
