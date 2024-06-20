@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "fyamf",
+  "risk": "2",
+  "title": "Adding staking instance as nominee before it is created",
+  "issueId": 62,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/62",
+  "originalIssueId": 151,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/151"
+}
