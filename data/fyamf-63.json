@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "fyamf",
+  "risk": "2",
+  "title": "Loss of reward incentives if ETHFromService is less than the expected rewards",
+  "issueId": 63,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/63",
+  "originalIssueId": 120,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/120"
+}
