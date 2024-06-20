@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Varun_05",
+  "risk": "2",
+  "title": "Unstake function reverts because of use of outdated/stale serviceIds array",
+  "issueId": 57,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/57",
+  "originalIssueId": 216,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/216"
+}
