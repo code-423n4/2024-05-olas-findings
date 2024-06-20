@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ZanyBonzy",
+  "risk": "2",
+  "title": "StakingToken.sol doesn't properly handle FOT, rebasing tokens or those with variable which will lead to accounting issues downstream.",
+  "issueId": 51,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/51",
+  "originalIssueId": 235,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/235"
+}
