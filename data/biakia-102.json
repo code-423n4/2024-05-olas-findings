@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "biakia",
+  "risk": "2",
+  "title": "If the underlying asset is a fee on transfer token,  the `_withdraw` may fail",
+  "issueId": 102,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/102",
+  "originalIssueId": 24,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/24"
+}
