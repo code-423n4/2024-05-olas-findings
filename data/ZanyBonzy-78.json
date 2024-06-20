@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ZanyBonzy",
+  "risk": "3",
+  "title": "Removing a nominee can brick the VoteWeighting.sol",
+  "issueId": 78,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/78",
+  "originalIssueId": 263,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/263"
+}
