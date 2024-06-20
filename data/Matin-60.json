@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Matin",
+  "risk": "3",
+  "title": "Incorrect inflation amounts and rates calculation for OLAS token for initial 9 years",
+  "issueId": 60,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/60",
+  "originalIssueId": 177,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/177"
+}
