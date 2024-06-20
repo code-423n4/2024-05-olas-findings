@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "zraxx",
+  "risk": "3",
+  "title": "When revoking user voting power, the update of changesSum is not synchronized with pointsSum.",
+  "issueId": 92,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/92",
+  "originalIssueId": 187,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/187"
+}
