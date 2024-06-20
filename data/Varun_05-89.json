@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Varun_05",
+  "risk": "3",
+  "title": "checkpoint function is not called before staking which can cause loss of rewards for already staked services.",
+  "issueId": 89,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/89",
+  "originalIssueId": 223,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/223"
+}
