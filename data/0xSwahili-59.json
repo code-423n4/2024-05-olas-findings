@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "0xSwahili",
+  "risk": "3",
+  "title": "Changing VoteWeighting contract can result in lost staking incentives",
+  "issueId": 59,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/59",
+  "originalIssueId": 190,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/190"
+}
