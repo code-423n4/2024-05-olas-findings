@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Emmanuel",
+  "risk": "2",
+  "title": "`withheldToken` logic: total claimed amount can be greater than the emissionsAmount for a target",
+  "issueId": 39,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/39",
+  "originalIssueId": 268,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/268"
+}
