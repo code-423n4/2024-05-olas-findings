@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Varun_05",
+  "risk": "3",
+  "title": "Removed nominee doesn't receive staking incentives for the epoch in which they were removed which is against the intended behaviour",
+  "issueId": 38,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/38",
+  "originalIssueId": 270,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/270"
+}
