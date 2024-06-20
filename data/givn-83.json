@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "givn",
+  "risk": "2",
+  "title": "Dusting Staking contract can prevent unstaking",
+  "issueId": 83,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/83",
+  "originalIssueId": 252,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/252"
+}
