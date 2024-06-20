@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "AvantGard",
+  "risk": "2",
+  "title": "Incorrect ID assignment in `removeNominee` when the last nominee is removed.",
+  "issueId": 94,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/94",
+  "originalIssueId": 184,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/184"
+}
