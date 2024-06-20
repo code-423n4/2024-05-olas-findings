@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "givn",
+  "risk": "2",
+  "title": "WormholeDepositProcessorL1 never sends cross-chain messages and bridges tokens only to EVM chains",
+  "issueId": 40,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/40",
+  "originalIssueId": 260,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/260"
+}
