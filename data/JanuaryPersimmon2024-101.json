@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "JanuaryPersimmon2024",
+  "risk": "2",
+  "title": "The StakingToken is incompatible with fee-on-transfer tokens",
+  "issueId": 101,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/101",
+  "originalIssueId": 43,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/43"
+}
