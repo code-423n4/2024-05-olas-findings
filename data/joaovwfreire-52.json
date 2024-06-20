@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "joaovwfreire",
+  "risk": "2",
+  "title": "DefaultTargetDispenserL2 deposit queue can leave bigger deposits unreachable",
+  "issueId": 52,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/52",
+  "originalIssueId": 229,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/229"
+}
