@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "givn",
+  "risk": "2",
+  "title": "GnosisDepositProcessor will never transfer the exact amount of tokens",
+  "issueId": 42,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/42",
+  "originalIssueId": 258,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/258"
+}
