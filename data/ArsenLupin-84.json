@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ArsenLupin",
+  "risk": "3",
+  "title": "Incorrect callValueRefundAddress in createRetryableTicket function leads to cross-chain message not delivered",
+  "issueId": 84,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/84",
+  "originalIssueId": 245,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/245"
+}
