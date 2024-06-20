@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "peanuts",
+  "risk": "2",
+  "title": "The maintenance functions in L1 and L2 contracts don't work as intended",
+  "issueId": 71,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/71",
+  "originalIssueId": 73,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/73"
+}
