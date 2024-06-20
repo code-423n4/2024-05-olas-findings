@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ArsenLupin",
+  "risk": "2",
+  "title": "Owner changes could not be applied if year changes in the middle of the epoch",
+  "issueId": 37,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/37",
+  "originalIssueId": 275,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/275"
+}
