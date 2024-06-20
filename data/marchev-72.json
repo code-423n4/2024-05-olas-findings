@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "marchev",
+  "risk": "2",
+  "title": "Users unable to vote in last period if `unlockTime` aligns with nominee voting periods",
+  "issueId": 72,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/72",
+  "originalIssueId": 69,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/69"
+}
