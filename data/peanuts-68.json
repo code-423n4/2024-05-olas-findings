@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "peanuts",
+  "risk": "2",
+  "title": "Leftover rewards is wrongly accounted in StakingBase, leaving the leftover rewards stuck in the contract instead",
+  "issueId": 68,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/68",
+  "originalIssueId": 82,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/82"
+}
