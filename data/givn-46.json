@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "givn",
+  "risk": "3",
+  "title": "Staking contract can distribute rewards to multisig without activity",
+  "issueId": 46,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/46",
+  "originalIssueId": 249,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/249"
+}
