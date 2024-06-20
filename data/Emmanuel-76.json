@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Emmanuel",
+  "risk": "2",
+  "title": "In ArbitrumDepositProcessorL1#\\_sendMessage, if refundAccount is 0, it is set to Dispenser contract, but the funds can't be used",
+  "issueId": 76,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/76",
+  "originalIssueId": 266,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/266"
+}
