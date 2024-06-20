@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "givn",
+  "risk": "2",
+  "title": "Dispenser is unable to control refunded tokens when bridging via Wormhole",
+  "issueId": 79,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/79",
+  "originalIssueId": 257,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/257"
+}
