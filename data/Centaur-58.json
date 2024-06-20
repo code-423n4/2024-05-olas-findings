@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "Centaur",
+  "risk": "3",
+  "title": "Off by one error leads to incorrect value return",
+  "issueId": 58,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/58",
+  "originalIssueId": 192,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/192"
+}
