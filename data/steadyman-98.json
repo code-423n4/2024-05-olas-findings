@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "steadyman",
+  "risk": "2",
+  "title": "Users cannot cancel their stake",
+  "issueId": 98,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/98",
+  "originalIssueId": 88,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/88"
+}
