@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "givn",
+  "risk": "2",
+  "title": "Dispenser is unable to use excess gas refund for Arbitrum bridging ",
+  "issueId": 80,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/80",
+  "originalIssueId": 256,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/256"
+}
