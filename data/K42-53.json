@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "K42",
+  "risk": "2",
+  "title": "Incorrect Handling of Withheld Amounts in `claimStakingIncentives()` Function",
+  "issueId": 53,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/53",
+  "originalIssueId": 228,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/228"
+}
