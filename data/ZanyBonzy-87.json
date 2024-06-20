@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ZanyBonzy",
+  "risk": "2",
+  "title": "Excess token refund spent is not refunded back to senders in multiple places",
+  "issueId": 87,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/87",
+  "originalIssueId": 237,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/237"
+}
