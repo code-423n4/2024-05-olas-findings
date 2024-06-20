@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "ArsenLupin",
+  "risk": "3",
+  "title": "inflation recalculation return incorrect inflationPerEpoch",
+  "issueId": 47,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/47",
+  "originalIssueId": 246,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/246"
+}
