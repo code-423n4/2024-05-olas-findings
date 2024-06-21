@@ -1,0 +1,10 @@
+{
+  "contest": 369,
+  "handle": "0xbrett8571",
+  "risk": "2",
+  "title": "setFxChildTunnel Does Not Update l2TargetDispenser in PolygonDepositProcessorL1.sol (Potential Message Loss)",
+  "issueId": 105,
+  "issueUrl": "https://github.com/code-423n4/2024-05-olas-findings/issues/105",
+  "originalIssueId": 33,
+  "originalIssueUrl": "https://github.com/code-423n4/2024-05-olas-validation/issues/33"
+}
