@@ -1,7 +1,7 @@
 ---
 sponsor: "Olas"
 slug: "2024-05-olas"
-date: "2024-07-16"
+date: "2024-08-06"
 title: "Olas"
 findings: "https://github.com/code-423n4/2024-05-olas-findings/issues"
 contest: 369
@@ -16,6 +16,8 @@ Code4rena (C4) is an open organization consisting of security researchers, audit
 A C4 audit is an event in which community participants, referred to as Wardens, review, audit, or analyze smart contract logic in exchange for a bounty provided by sponsoring projects.
 
 During the audit outlined in this document, C4 conducted an analysis of the Olas smart contract system written in Solidity. The audit took place between May 28 — June 18, 2024.
+
+Following the C4 audit, warden [Varun_05](https://code4rena.com/@Varun_05) reviewed the sponsor's mitigations and provided comments, which are included alongside each corresponding finding in this audit report.
 
 ## Wardens
 
@@ -164,6 +166,132 @@ Error
 **[0xA5DF (judge) increased severity to High and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/36#issuecomment-2198226815):**
  > Marking as high, because this is going to break the core accounting of `VoteWeighting` every time a nominee is removed. The actual sum of the weights is going to be more than the declared sum.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-governance/pull/146)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/36#issuecomment-2253868156):**
+> Partially fixed in revoke `revokeRemovedNomineeVotingPower` but the issue still remains if all the users who voted for a removed nominee doesn't revoke their voting power.
+> 
+> Elaborating the issues as follows. Nominee is removed due to which the following updation happens:
+>
+> ```solidity
+> uint256 oldWeight = _getWeight(account, chainId);
+>         uint256 oldSum = _getSum();
+>         uint256 nextTime = (block.timestamp + WEEK) / WEEK * WEEK;
+>         pointsWeight[nomineeHash][nextTime].bias = 0;
+>         timeWeight[nomineeHash] = nextTime;
+> 
+>         // Account for the the sum weight change
+>         uint256 newSum = oldSum - oldWeight;
+>         pointsSum[nextTime].bias = newSum;
+>         timeSum = nextTime;
+> ```
+>
+> As seen, `pointsSum.bias` is updated by subtracted the left over weights of the removed nominee. Now, as `pointsSum.Slope` is not reduced by the amount contributed by the removed slope instantly.
+> 
+> For mitigating this issue, the following changes were done in the `revokeRemovedNomineeVotingPower` function:
+>
+> ```solidity
+> if (oldSlope.end > nextTime) {
+>             pointsWeight[nomineeHash][nextTime].slope =
+>                 _maxAndSub(pointsWeight[nomineeHash][nextTime].slope, oldSlope.slope);
+>             pointsSum[nextTime].slope = _maxAndSub(pointsSum[nextTime].slope, oldSlope.slope);
+>         }
+> ```
+>
+> The issue is if there is even a delay of a week from when the nominee was removed to when the users who voted for the nominee then the `pointsSum.bias` would be reduced by wrong amount thus it will break the core accounting of vote weighting.
+> 
+> Also, there is no loss of voting power for the user who voted for the removed nominee as he can call revoke removed nominee voting power any time and can get his voting power back thus they can even delay calling this function thus affecting vote accounting.
+> 
+> One of the mitigation can be as follows:
+>
+> <details>
+>
+> ```solidity
+> function removeNominee(bytes32 account, uint256 chainId) external {
+>         // Check for the contract ownership
+>         if (msg.sender != owner) {
+>             revert OwnerOnly(owner, msg.sender);
+>         }
+> 
+>         // Get the nominee struct and hash
+>         Nominee memory nominee = Nominee(account, chainId);
+>         bytes32 nomineeHash = keccak256(abi.encode(nominee));
+> 
+>         // Get the nominee id in the nominee set
+>         uint256 id = mapNomineeIds[nomineeHash];
+>         if (id == 0) {
+>             revert NomineeDoesNotExist(account, chainId);
+>         }
+> 
+>         // Set nominee weight to zero
+>         uint256 oldWeight = _getWeight(account, chainId);
+>         uint256 oldSum = _getSum();
+>         uint256 nextTime = (block.timestamp + WEEK) / WEEK * WEEK;
+>         pointsWeight[nomineeHash][nextTime].bias = 0;
+>   ++ pointsWeight[nomineeHash][nextTime].slope = 0
+>         timeWeight[nomineeHash] = nextTime;
+>   ++      uint256 totalSlope;
+>   ++      for (uint256 i = 1; i =< MAX_NUM_WEEKS; i++) {
+>   ++          uint256 time = nextTime + i * WEEK;
+>   ++         if(changesWeight[nomineeHash][time]>0){
+>   ++          totalSlope += changesWeight[nomineeHash][time];
+>   ++          changesWeight[nomineeHash][time] = 0;
+>   ++           changesSum[time] -= changesWeight[nomineeHash][time];
+>            }
+>             
+>          }
+>         
+>         // Account for the the sum weight change
+>         uint256 newSum = oldSum - oldWeight;
+>         pointsSum[nextTime].bias = newSum;
+> ++       pointsSum[nextTime].slope -= totalSlope;
+>         timeSum = nextTime;
+>          
+>         // Add to the removed nominee map and set
+>         mapRemovedNominees[nomineeHash] = setRemovedNominees.length;
+>         setRemovedNominees.push(nominee);
+> 
+>         // Remove nominee from the map
+>         mapNomineeIds[nomineeHash] = 0;
+> 
+>         // Shuffle the current last nominee id in the set to be placed to the removed one
+>         nominee = setNominees[setNominees.length - 1];
+>         bytes32 replacedNomineeHash = keccak256(abi.encode(nominee));
+>         mapNomineeIds[replacedNomineeHash] = id;
+>         setNominees[id] = nominee;
+>         // Pop the last element from the set
+>         setNominees.pop();
+> 
+>         // Remove nominee in dispenser, if applicable
+>         address localDispenser = dispenser;
+>         if (localDispenser != address(0)) {
+>             IDispenser(localDispenser).removeNominee(nomineeHash);
+>         }
+> 
+>         emit RemoveNominee(account, chainId, newSum);
+>     }
+> ``` 
+> 
+> </details>
+> 
+> Then, there is no need of the following logic in revoke removed nominee voting power function. They can be omitted.
+>
+> ```solidity
+>  uint256 nextTime = (block.timestamp + WEEK) / WEEK * WEEK;
+>         // Adjust weight and sum slope changes
+>         if (oldSlope.end > nextTime) {
+>             pointsWeight[nomineeHash][nextTime].slope =
+>                 _maxAndSub(pointsWeight[nomineeHash][nextTime].slope, oldSlope.slope);
+>             pointsSum[nextTime].slope = _maxAndSub(pointsSum[nextTime].slope, oldSlope.slope);
+>         }
+> 
+>         // Cancel old slope changes if they still didn't happen
+>         if (oldSlope.end > block.timestamp) {
+>             changesWeight[nomineeHash][oldSlope.end] -= oldSlope.slope;
+>             changesSum[oldSlope.end] -= oldSlope.slope;
+>         }
+> ```
+
 ***
 
 ## [[H-02] Arbitrary tokens and data can be bridged to `GnosisTargetDispenserL2` to manipulate staking incentives](https://github.com/code-423n4/2024-05-olas-findings/issues/22)
@@ -206,6 +334,11 @@ Access Control
 
 **[0xA5DF (judge) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/22#issuecomment-2194772902):**
  > High severity seems appropriate, given that this can lead to the distribution of staking incentives to arbitrary targets.
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/156)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/22#issuecomment-2254186575):**
+> Fixed.
 
 ***
  
@@ -430,6 +563,11 @@ Context
 
 *Note: For full discussion, see [here](https://github.com/code-423n4/2024-05-olas-findings/issues/89).*
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-registries/pull/176)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/89#issuecomment-2254119276):**
+> Fixed.
+
 ***
 
 ## [[M-02] Less active nominees can be left without rewards after an year of inactivity](https://github.com/code-423n4/2024-05-olas-findings/issues/64)
@@ -561,6 +699,11 @@ Governance
  > Marking as Medium due to sponsor's comment. It seems like this issue wasn't obvious; therefore, this is a valid issue.
 
 *Note: For full discussion, see [here](https://github.com/code-423n4/2024-05-olas-findings/issues/64).*
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-governance/pull/145)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/64#issuecomment-2253817804):**
+> Fixed with maximum number of weeks increased to 250.
 
 ***
 
@@ -982,6 +1125,11 @@ Context
 **[0xA5DF (judge) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/62#issuecomment-2194956607):**
  > Requiring more gas would probably be low, but it seems like due to `MAX_NUM_WEEKS` the nominee would become unusable at some point. Marking as medium.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-registries/pull/173)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/62#issuecomment-2254063279):**
+> Fixed.
+
 ***
 
 ## [[M-04] Loss of incentives if total weight in an epoch is zero](https://github.com/code-423n4/2024-05-olas-findings/issues/61)
@@ -1392,6 +1540,11 @@ Context
 > - There's no real/classic loss of assets here, this is just deducted from the inflation caps.
 > - This happens only under the condition that there's zero total weight.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/164)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/61#issuecomment-2254151049):**
+> Fixed.
+
 ***
 
 ## [[M-05] Changing VoteWeighting contract can result in lost staking incentives](https://github.com/code-423n4/2024-05-olas-findings/issues/59)
@@ -1531,6 +1684,12 @@ Invalid Validation
 
 **[kupermind (Olas) acknowledged and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/59#issuecomment-2196513334):**
  > Ok, this is possible then.
+
+**Olas mitigated:**
+> Added this to the deployment procedure.
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/59#issuecomment-2254163992):**
+> There's no fix to this issue. Best is that the admin takes right actions before changing the voteWeighting contract.
 
 ***
 
@@ -2054,6 +2213,11 @@ Context
 **[kupermind (Olas) confirmed and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/57#issuecomment-2188711589):**
  > Good catch. However, we are going to modify in a different place, removing lines 826-829 and leaving line 827, checking that `evictServiceIds.length > 0`, otherwise we can reuse `serviceIds` array.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-registries/pull/174)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/57#issuecomment-2254105938):**
+> Fixed.
+
 ***
 
 ## [[M-07] In `retain` function, `checkpoint` nominee function is not called which can cause zero amount of tokens being retained](https://github.com/code-423n4/2024-05-olas-findings/issues/56)
@@ -2246,6 +2410,11 @@ Context
 **[0xA5DF (judge) decreased severity to Medium and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/56#issuecomment-2194979898):**
  > Severity is medium since this isn't a classic loss of funds, this just means that less OLAS could be minted.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/166)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/56#issuecomment-2254161048):**
+> Fixed.
+
 ***
 
 ## [[M-08] StakingToken.sol doesn't properly handle FOT, rebasing tokens or those with variable which will lead to accounting issues downstream](https://github.com/code-423n4/2024-05-olas-findings/issues/51)
@@ -2316,6 +2485,11 @@ Token-Transfer
 
 **[0xA5DF (judge) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/51#issuecomment-2194825365):**
  > Out of fairness to wardens we'll have to follow the README here, I'm gonna sustain the medium severity for this one.
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-registries/pull/177)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/51#issuecomment-2254125734):**
+> Fixed, updated the readme.
 
 ***
 
@@ -2659,6 +2833,11 @@ Context
 **[0xA5DF (judge) decreased severity to Medium and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/38#issuecomment-2194762390):**
  > Regarding severity - I don't see how this can be high, given that only a small part of the staking-incentives are lost (only for the week where the nominee is removed).
 
+**Olas mitigated [here](https://github.com/valory-xyz/autonolas-registries/pull/180) and [here](https://github.com/valory-xyz/autonolas-tokenomics/pull/165)**.
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/38#issuecomment-2254157975):**
+> Fixed.
+
 ***
 
 ## [[M-10] Attacker can make claimed staking incentives irredeemable on Gnosis Chain](https://github.com/code-423n4/2024-05-olas-findings/issues/33)
@@ -2697,6 +2876,12 @@ Do not allow users to directly specify the `gasLimitMessage`. Instead, have the 
 Alternatively, implement a way to replay failed messages from the AMB, so that irredeemable incentives can be recovered without requiring governance intervention.
 
 **[kupermind (Olas) acknowledged](https://github.com/code-423n4/2024-05-olas-findings/issues/33#issuecomment-2196873099)**
+
+**Olas mitigated:**
+> The issue has been fixed due to the code re-writing and making the gas limit much higher by default compared to the warden's concern. Even though there's no specific PR, the issue is fixed in between all the relevant PRs.
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/33#issuecomment-2254211104):**
+> Fixed.
 
 ***
 
@@ -2739,6 +2924,11 @@ Change the `refundChain` parameter in the `sendTokenWithPayloadToEvm()` call to 
 
 **[kupermind (Olas) confirmed and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/32#issuecomment-2191755270):**
  > This is correct.
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/160)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/32#issuecomment-2254203706):**
+> Fixed.
 
 ***
 
@@ -2794,6 +2984,11 @@ Token-Transfer
 **[kupermind (Olas) acknowledged and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/31#issuecomment-2191778611):**
  > This is an interesting scenario. In this case `forced` unstake condition addition to the current unstake would be a better approach, as we are not able to change the multisig address.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-registries/pull/178)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/31#issuecomment-2254123189):**
+> Fixed.
+
 ***
 
 ## [[M-13] Attacker can cancel claimed staking incentives on Arbitrum](https://github.com/code-423n4/2024-05-olas-findings/issues/29)
@@ -2834,6 +3029,11 @@ Access Control
 **[kupermind (Olas) confirmed and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/29#issuecomment-2191806819):**
  > Very interesting.
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/158)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/29#issuecomment-2254197597):**
+> Fixed.
+
 ***
 
 ## [[M-14] Unauthorized claiming of staking incentives for retainer](https://github.com/code-423n4/2024-05-olas-findings/issues/27)
@@ -2867,6 +3067,11 @@ Restrict the `claimStakingIncentives()` function to prevent the claiming of rewa
 Invalid Validation
 
 **[kupermind (Olas) confirmed](https://github.com/code-423n4/2024-05-olas-findings/issues/27#issuecomment-2191835402)**
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/166)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/27#issuecomment-2254162217):**
+> Fixed.
 
 ***
 
@@ -2957,6 +3162,57 @@ Decimal
 
 *Note: For full discussion, see [here](https://github.com/code-423n4/2024-05-olas-findings/issues/26).*
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/161)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/26#issuecomment-2254218646):**
+> `syncWithheldAmount` function is modified correctly which passes normalized amount to dispensor. One additional modification made in `syncWithheldAmountMaintenance` in dispensor (i.e., amount is not normalized).
+> 
+> As it mentions, that exact data which failed to get delivered will be passed and as admin calls this function, we expect the normalized amount will be passed.
+> 
+> ```solidity
+> /// @dev Syncs the withheld amount manually by the DAO in order to restore the data that was not delivered from L2.
+>     /// @notice The parameters here must correspond to the exact data failed to be delivered (amount, batch).
+>     ///         The possible bridge failure scenario that requires to act via the DAO vote includes:
+>     ///         - Message from L2 to L1 fails: need to call this function.
+>     /// @param chainId L2 chain Id.
+>     /// @param amount Withheld amount that was not delivered from L2.
+>     /// @param batchHash Unique batch hash for each message transfer.
+>     function syncWithheldAmountMaintenance(uint256 chainId, uint256 amount, bytes32 batchHash) external {
+>         // Check the contract ownership
+>         if (msg.sender != owner) {
+>             revert OwnerOnly(msg.sender, owner);
+>         }
+> 
+>         // Check zero value chain Id and amount
+>         if (chainId == 0 || amount == 0 || batchHash == 0) {
+>             revert ZeroValue();
+>         }
+> 
+>         // The sync must never happen for the L1 chain Id itself, as dispenser exists strictly on L1-s
+>         if (chainId == block.chainid) {
+>             revert WrongChainId(chainId);
+>         }
+> 
+>         // Note: all the amounts coming from events of undelivered messages are already normalized
+>         uint256 withheldAmount = mapChainIdWithheldAmounts[chainId] + amount;
+>         // The overall amount is bound by the OLAS projected maximum amount for years to come
+>         if (withheldAmount > type(uint96).max) {
+>             revert Overflow(withheldAmount, type(uint96).max);
+>         }
+> 
+>         // Add to the withheld amount
+>         mapChainIdWithheldAmounts[chainId] = withheldAmount;
+> 
+>         // Get deposit processor address corresponding to the specified chain Id
+>         address depositProcessor = mapChainIdDepositProcessors[chainId];
+> 
+>         // Update the batch hash on deposit processor side
+>         IDepositProcessor(depositProcessor).updateHashMaintenance(batchHash);
+> 
+>         emit WithheldAmountSynced(chainId, amount, withheldAmount, batchHash);
+>     }
+> ```
+
 ***
 
 ## [[M-16] Staked service will be irrecoverable by owner if not an ERC721 receiver](https://github.com/code-423n4/2024-05-olas-findings/issues/23)
@@ -3006,6 +3262,11 @@ ERC721
 **[0xA5DF (judge) decreased severity to Medium and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/23#issuecomment-2194755527):**
  > I agree that this is less likely to happen and _somewhat_ on the user to ensure that their contract can receive ERC721
 > However, I think that the likelihood is sufficient to consider this as medium, given the high impact.
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-registries/pull/177)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/23#issuecomment-2254124096):**
+> Fixed.
 
 ***
 
@@ -3096,6 +3357,11 @@ ETH-Transfer
 
 **[0xA5DF (judge) decreased severity to Medium and commented](https://github.com/code-423n4/2024-05-olas-findings/issues/20#issuecomment-2195222072):**
  > I agree severity is medium, this is just paying double fees.
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/157)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/20#issuecomment-2254190835):**
+> Fixed.
 
 ***
 
@@ -3286,6 +3552,11 @@ This fix ensures that the ID reassignment is only performed if the removed nomin
 
 **[kupermind (Olas) confirmed](https://github.com/code-423n4/2024-05-olas-findings/issues/16#issuecomment-2194324729)**
 
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-governance/pull/144)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/16#issuecomment-2254051397):**
+> Fixed.
+
 ***
 
 ## [[M-19] The `refundAccount` is erroneously set to `msg.sender` instead of `tx.origin` when `refundAccount` specified as `address(0)`](https://github.com/code-423n4/2024-05-olas-findings/issues/5)
@@ -3330,6 +3601,11 @@ The intended functionality is broken and refunds will be sent to the wrong addre
 Set the `refundAccount` to `tx.origin` instead.
 
 **[kupermind (Olas) confirmed](https://github.com/code-423n4/2024-05-olas-findings/issues/5#issuecomment-2191864919)**
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/160)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/5#issuecomment-2254202883):**
+> Fixed.
 
 ***
 
@@ -3400,6 +3676,11 @@ This affects multiple areas of the codebase, see links to affected code.
 Refund `msg.value - cost` to `tx.origin`.
 
 **[kupermind (Olas) confirmed](https://github.com/code-423n4/2024-05-olas-findings/issues/4#issuecomment-2194378045)**
+
+**[Olas mitigated](https://github.com/valory-xyz/autonolas-tokenomics/pull/159)**
+
+**[Varun_05 (warden) commented](https://github.com/code-423n4/2024-05-olas-findings/issues/4#issuecomment-2254196012):**
+> Fixed.
 
 ***
 
